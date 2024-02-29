@@ -8,6 +8,7 @@ plt.rcParams['text.usetex'] = True
 plt.rcParams.update({'font.size': 11})
 
 #plots data
+columns=["time","pos"]
 df=pd.read_csv("TEK0005.CSV",usecols=[3,4],names=["time","amp"])
 time=np.array(df.time)
 amp=np.array(df.amp)
@@ -20,12 +21,27 @@ peak_indices = signal.find_peaks(amp,width=20)
 peak_indices=peak_indices[0]
 peak_count = len(peak_indices) # the number of peaks in the array
 
-plt.plot(time,amp)
-plt.savefig("nopeaks.pdf")
 peaks_time=[time[peak_indices[i]] for i in range(len(peak_indices))]
 peaks_amp=[amp[[peak_indices[i]]] for i in range(len(peak_indices))]
 
-#get index starting at 0.0 and ending at 0.4 s
-plt.plot(peaks_time,peaks_amp,"o")
-plt.savefig("peaks.pdf")
+def TimeToFreq(t,f0,dt,df):
+    conversion_rate=df/dt
+    return t*conversion_rate+f0
+
+#we want freq and index number
+peaks_freq=[TimeToFreq(peaks_time[i],800,0.4,9200) for i in range(len(peaks_time))]
+peaks_index=[i for i in range(len(peaks_time))]
+print(peaks_index)
+plt.plot(peaks_index,peaks_freq,"o")
+L=0.30
+
+def LinearFit(x,c):
+    return (c*(x)/(2*L))+peaks_freq[0]
+guess=[343]
+parameters, covariance= curve_fit(LinearFit, peaks_index, peaks_freq ,p0=guess)
+c=parameters[0]
+print(c)
+print(peaks_index[1],peaks_freq[1])
+fit_freq=[(c*(i))/(2*L)+peaks_freq[0] for i in range(len(peaks_time))]
+plt.plot(peaks_index,fit_freq)
 plt.show()
