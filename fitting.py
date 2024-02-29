@@ -4,6 +4,8 @@ import pandas as pd
 from scipy.optimize import curve_fit
 from scipy import signal
 fig, (ax1, ax2)=plt.subplots(1,2)
+fig.set_figwidth(8)
+fig.set_figheight(6)
 plt.rcParams['text.usetex'] = True
 plt.rcParams.update({'font.size': 11})
 
@@ -48,8 +50,9 @@ residual=[peaks_freq[i]-fit_freq[i] for i in range(len(peaks_time))]
 ax2.axhline(0,0,20,color="black",linestyle="dashed")
 ax2.plot(peaks_index,residual,"o",color="red",label="Residual")
 fig.supxlabel("Resonance Number")
-fig.supylabel("Frequency (Hz)")
+fig.supylabel("Frequency (Hz)",)
 ax1.legend()
 ax2.legend()
+plt.savefig("fitting.pdf")
 plt.tight_layout()
 plt.show()
