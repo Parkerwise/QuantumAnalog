@@ -8,7 +8,7 @@ plt.rcParams['text.usetex'] = True
 plt.rcParams.update({'font.size': 11})
 
 #plots data
-df=pd.read_csv("TEK0005.CSV",usecols=[3,4],names=["time","amp"])
+df=pd.read_csv("TEK0004.CSV",usecols=[3,4],names=["time","amp"])
 time=np.array(df.time)
 amp=np.array(df.amp)
 start_index=np.where(time==0)[0][0]

@@ -3,13 +3,13 @@ import numpy as np
 import pandas as pd
 from scipy.optimize import curve_fit
 from scipy import signal
-
+fig, (ax1, ax2)=plt.subplots(1,2)
 plt.rcParams['text.usetex'] = True
 plt.rcParams.update({'font.size': 11})
 
 #plots data
 columns=["time","pos"]
-df=pd.read_csv("TEK0005.CSV",usecols=[3,4],names=["time","amp"])
+df=pd.read_csv("TEK0004.CSV",usecols=[3,4],names=["time","amp"])
 time=np.array(df.time)
 amp=np.array(df.amp)
 start_index=np.where(time==0)[0][0]
@@ -32,8 +32,7 @@ def TimeToFreq(t,f0,dt,df):
 peaks_freq=[TimeToFreq(peaks_time[i],800,0.4,9200) for i in range(len(peaks_time))]
 peaks_index=[i for i in range(len(peaks_time))]
 print(peaks_index)
-plt.plot(peaks_index,peaks_freq,"o")
-L=0.30
+L=0.375
 
 def LinearFit(x,c):
     return (c*(x)/(2*L))+peaks_freq[0]
@@ -43,5 +42,14 @@ c=parameters[0]
 print(c)
 print(peaks_index[1],peaks_freq[1])
 fit_freq=[(c*(i))/(2*L)+peaks_freq[0] for i in range(len(peaks_time))]
-plt.plot(peaks_index,fit_freq)
+ax1.plot(peaks_index,fit_freq,label="Fit")
+ax1.plot(peaks_index,peaks_freq,"o",label="Data")
+residual=[peaks_freq[i]-fit_freq[i] for i in range(len(peaks_time))]
+ax2.axhline(0,0,20,color="black",linestyle="dashed")
+ax2.plot(peaks_index,residual,"o",color="red",label="Residual")
+fig.supxlabel("Resonance Number")
+fig.supylabel("Frequency (Hz)")
+ax1.legend()
+ax2.legend()
+plt.tight_layout()
 plt.show()
