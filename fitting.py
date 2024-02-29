@@ -9,14 +9,16 @@ plt.rcParams.update({'font.size': 11})
 
 #plots data
 columns=["time","pos"]
-df=pd.read_csv("TEK0006.CSV",usecols=[3,4],names=["time","amp"])
-max_peak_width=1
-peak_widths = np.arange(1, max_peak_width)
-peak_indices = signal.find_peaks_cwt(y_coordinates, peak_widths)
-peak_count = len(peak_indices) # the number of peaks in the array
+df=pd.read_csv("TEK0004.CSV",usecols=[3,4],names=["time","amp"])
 time=np.array(df.time)
 amp=np.array(df.amp)
-
-print(time)
+peak_indices = signal.find_peaks(amp,width=20)
+peak_indices=peak_indices[0]
+peak_count = len(peak_indices) # the number of peaks in the array
+print(peak_count)
+print(peak_indices)
 plt.plot(df.time,df.amp)
+peaks_time=[time[peak_indices[i]] for i in range(len(peak_indices))]
+peaks_amp=[amp[[peak_indices[i]]] for i in range(len(peak_indices))]
+plt.plot(peaks_time,peaks_amp,"o")
 plt.show()
