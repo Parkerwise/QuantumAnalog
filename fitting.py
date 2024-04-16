@@ -3,9 +3,9 @@ import numpy as np
 import pandas as pd
 from scipy.optimize import curve_fit
 from scipy import signal
-fig, (ax1, ax2)=plt.subplots(1,2)
-fig.set_figwidth(8)
-fig.set_figheight(6)
+fig, (ax1, ax2)=plt.subplots(2,1)
+fig.set_figwidth(6)
+fig.set_figheight(8)
 plt.rcParams['text.usetex'] = True
 plt.rcParams.update({'font.size': 11})
 
@@ -39,7 +39,7 @@ L=0.375
 def LinearFit(x,c):
     return (c*(x)/(2*L))+peaks_freq[0]
 guess=[343]
-parameters, covariance= curve_fit(LinearFit, peaks_index, peaks_freq ,p0=guess)
+parameters, covariance= curve_fit(LinearFit, peaks_index, peaks_freq ,sigma=[0.1]*len(peaks_index))
 c=parameters[0]
 print(c)
 print(peaks_index[1],peaks_freq[1])
@@ -54,5 +54,6 @@ fig.supylabel("Frequency (Hz)",)
 ax1.legend()
 ax2.legend()
 plt.savefig("fitting.pdf")
+print(np.sqrt(np.diag(covariance)))
 plt.tight_layout()
 plt.show()

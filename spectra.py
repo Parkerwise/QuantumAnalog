@@ -13,8 +13,11 @@ time=np.array(df.time)
 amp=np.array(df.amp)
 start_index=np.where(time==0)[0][0]
 end_index=np.where(time==0.4)[0][0]
-
+def TimeToFreq(t,f0,dt,df):
+    conversion_rate=df/dt
+    return t*conversion_rate+f0
 time=time[start_index:end_index]
+time=[TimeToFreq(time[i],800,0.4,9200) for i in range(len(time))]
 amp=amp[start_index:end_index]
 peak_indices = signal.find_peaks(amp,width=20)
 peak_indices=peak_indices[0]
@@ -27,5 +30,7 @@ peaks_amp=[amp[[peak_indices[i]]] for i in range(len(peak_indices))]
 
 #get index starting at 0.0 and ending at 0.4 s
 plt.plot(peaks_time,peaks_amp,"o")
+plt.xlabel("Frequency (Hz)")
+plt.ylabel("Amplitude (V)")
 plt.savefig("peaks.pdf")
 plt.show()
