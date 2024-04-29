@@ -6,7 +6,7 @@ from scipy import signal
 
 plt.rcParams['text.usetex'] = True
 plt.rcParams.update({'font.size': 11})
-
+f=plt.figure()
 #plots data
 names=[
 "TEK0010.CSV",
@@ -68,4 +68,3 @@ plt.xlabel("Frequency (Hz)")
 plt.ylabel("Angle (degrees)")
 cb=plt.colorbar()
 cb.set_label(label="Amplitude (V)")
-plt.savefig("Rotation.pdf")

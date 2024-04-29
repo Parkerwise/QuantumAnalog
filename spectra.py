@@ -6,6 +6,9 @@ from scipy import signal
 
 plt.rcParams['text.usetex'] = True
 plt.rcParams.update({'font.size': 11})
+f=plt.figure()
+f.set_figwidth(6)
+f.set_figheight(3)
 
 #plots data
 df=pd.read_csv("TEK0004.CSV",usecols=[3,4],names=["time","amp"])
@@ -32,5 +35,6 @@ peaks_amp=[amp[[peak_indices[i]]] for i in range(len(peak_indices))]
 plt.plot(peaks_time,peaks_amp,"o")
 plt.xlabel("Frequency (Hz)")
 plt.ylabel("Amplitude (V)")
+plt.tight_layout()
 plt.savefig("peaks.pdf")
 plt.show()

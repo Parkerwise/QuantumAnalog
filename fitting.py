@@ -5,13 +5,13 @@ from scipy.optimize import curve_fit
 from scipy import signal
 fig, (ax1, ax2)=plt.subplots(2,1)
 fig.set_figwidth(6)
-fig.set_figheight(8)
+fig.set_figheight(4)
 plt.rcParams['text.usetex'] = True
 plt.rcParams.update({'font.size': 11})
 
 #plots data
 columns=["time","pos"]
-df=pd.read_csv("TEK0004.CSV",usecols=[3,4],names=["time","amp"])
+df=pd.read_csv("TEK0006.CSV",usecols=[3,4],names=["time","amp"])
 time=np.array(df.time)
 amp=np.array(df.amp)
 start_index=np.where(time==0)[0][0]
@@ -51,9 +51,11 @@ ax2.axhline(0,0,20,color="black",linestyle="dashed")
 ax2.plot(peaks_index,residual,"o",color="red",label="Residual")
 fig.supxlabel("Resonance Number")
 fig.supylabel("Frequency (Hz)",)
+ax1.yaxis.tick_right()
+ax2.yaxis.tick_right()
 ax1.legend()
 ax2.legend()
-plt.savefig("fitting.pdf")
+#plt.savefig("fitting.pdf")
 print(np.sqrt(np.diag(covariance)))
 plt.tight_layout()
-plt.show()
+#plt.show()
